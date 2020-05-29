@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron ."
   },
-  "repository":  "git+https://github.com/deepanshut041/robo-juice.git",
+  "repository": "git+https://github.com/deepanshut041/robo-juice.git",
   "author": "Deepanshu Tyagi",
   "license": "MIT",
   "bugs": {
@@ -16,5 +16,9 @@
   "devDependencies": {
     "electron": "^9.0.0",
     "electron-packager": "^14.2.1"
+  },
+  "dependencies": {
+    "electron-is-dev": "^1.2.0",
+    "python-shell": "^2.0.1"
   }
 }
