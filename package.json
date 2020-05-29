@@ -1,0 +1,20 @@
+{
+  "name": "robo-juice",
+  "version": "1.0.0",
+  "description": "This is Robo Juice application.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository":  "git+https://github.com/deepanshut041/robo-juice.git",
+  "author": "Deepanshu Tyagi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deepanshut041/robo-juice/issues"
+  },
+  "homepage": "https://github.com/deepanshut041/robo-juice#readme",
+  "devDependencies": {
+    "electron": "^9.0.0",
+    "electron-packager": "^14.2.1"
+  }
+}
