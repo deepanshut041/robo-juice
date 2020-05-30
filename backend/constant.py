@@ -1,8 +1,0 @@
-import enum
-
-class ShopState(enum.Enum):
-    WELCOME = "WELCOME"
-    TAKE_ORDER = "TAKE_ORDER"
-    CONFIRM_ORDER = "CONFIRM_ORDER"
-    PREPARE_ORDER = "PREPARE_ORDER"
-    DILIVER_ORDER = "DILIVER_ORDER"

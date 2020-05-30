@@ -12,7 +12,12 @@ shop_status = ShopState.WELCOME
 
 @app.route('/')
 def main():
-    return jsonify(name="Master Service")
+    return jsonify(status="Master Service")
+
+@app.route('/orders')
+def orders():
+    emit('orders', "orders", broadcast=True, namespace='/')
+    return jsonify(status="Master Service")
 
 @socketio.on('connect')
 def connect():
