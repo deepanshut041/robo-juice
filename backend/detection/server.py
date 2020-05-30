@@ -24,7 +24,7 @@ def detection():
     return jsonify(msg="Detection service", status = detect)
 
 
-
+# For image detection logic goes here
 def yolo():
     time.sleep(1)
 
@@ -35,10 +35,7 @@ if __name__ == '__main__':
     while(True):
         if(detect):
             yolo()
-            print("detecting")
         else:
             time.sleep(1)
-            print("Skipping")
-
 
     

@@ -4,8 +4,9 @@ const isDev = require('electron-is-dev');
 const { spawn } = require('child_process');
 
 let mainWindow = null
-let masterServer = null
-let plcServer = null
+let masterServer = null // port 5000
+let plcServer = null // port 5001
+let detectionServer = null // port 5002
 
 const createWindow = () => {
     mainWindow = new BrowserWindow({ width: 800, height: 600, fullscreen: !isDev})
@@ -15,6 +16,7 @@ const createWindow = () => {
     mainWindow.loadURL(startURL)
     startMasterServer()
     startPlcServer()
+    startDetectionServer()
 }
 
 function startMasterServer() {
@@ -29,6 +31,12 @@ function startPlcServer(){
     plcServer.on('error', (err) => console.error(err));
 }
 
+function startDetectionServer(){
+    detectionServer = spawn('python', ['backend/detection/server.py']);
+    detectionServer.stdout.on('data', (data) => console.log(data.toString('utf8')));
+    detectionServer.on('error', (err) => console.error(err));
+}
+
 app.on('ready', createWindow)
 
 app.on('window-all-closed', () => {
@@ -36,5 +44,13 @@ app.on('window-all-closed', () => {
     if (masterServer) {
         masterServer.stdin.pause();
         masterServer.kill();
+    }
+    if (plcServer) {
+        plcServer.stdin.pause();
+        plcServer.kill();
+    }
+    if (detectionServer) {
+        detectionServer.stdin.pause();
+        detectionServer.kill();
     }
 })

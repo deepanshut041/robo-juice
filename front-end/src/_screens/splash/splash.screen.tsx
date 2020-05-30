@@ -14,6 +14,7 @@ enum ServiceFetchType {
 interface SplashScreenState {
     plcService: ServiceFetchType
     masterService: ServiceFetchType
+    detectionService: ServiceFetchType
 }
 
 export default class SplashScreen extends Component<any, SplashScreenState>{
@@ -22,7 +23,8 @@ export default class SplashScreen extends Component<any, SplashScreenState>{
         super(props)
         this.state = {
             plcService: ServiceFetchType.LOADING,
-            masterService: ServiceFetchType.LOADING
+            masterService: ServiceFetchType.LOADING,
+            detectionService: ServiceFetchType.LOADING
         }
     }
 
@@ -36,8 +38,9 @@ export default class SplashScreen extends Component<any, SplashScreenState>{
                         <Col className="col-auto">
                             <img width="200px" src={logo} alt="Logo" className="mx-auto d-block" />
                             <div className="mt-5 mb-2">
-                                {this.displayListItem(this.state.masterService, "Master Service")}
-                                {this.displayListItem(this.state.plcService, "Plc Service")}
+                                {this.displayListItem(this.state.masterService, "Master Service at port 5000")}
+                                {this.displayListItem(this.state.plcService, "Plc Service at port 5001")}
+                                {this.displayListItem(this.state.detectionService, "Image Detection Service at port 5002")}
                             </div>
                             {(this.fetchError()) ? (
                                 <div className="text-center">
@@ -76,7 +79,8 @@ export default class SplashScreen extends Component<any, SplashScreenState>{
     fetchAll = () => {
         this.setState({
             masterService: ServiceFetchType.LOADING,
-            plcService: ServiceFetchType.LOADING
+            plcService: ServiceFetchType.LOADING,
+            detectionService: ServiceFetchType.LOADING
         })
         fetch('http://localhost:5000').then(async res => {
             this.setState({ masterService: ServiceFetchType.DONE })
@@ -89,13 +93,23 @@ export default class SplashScreen extends Component<any, SplashScreenState>{
         }).catch(error => {
             this.setState({ plcService: ServiceFetchType.ERROR })
         })
+
+        fetch('http://localhost:5002').then(async res => {
+            this.setState({ detectionService: ServiceFetchType.DONE })
+        }).catch(error => {
+            this.setState({ detectionService: ServiceFetchType.ERROR })
+        })
     }
 
     allFetchSuccess(): boolean {
-        return this.state.plcService === ServiceFetchType.DONE && this.state.masterService === ServiceFetchType.DONE
+        return (this.state.plcService === ServiceFetchType.DONE 
+            && this.state.masterService === ServiceFetchType.DONE 
+            && this.state.detectionService === ServiceFetchType.DONE)
     }
 
     fetchError(): boolean {
-        return this.state.plcService === ServiceFetchType.ERROR || this.state.masterService === ServiceFetchType.ERROR
+        return (this.state.plcService === ServiceFetchType.ERROR 
+            || this.state.masterService === ServiceFetchType.ERROR
+            || this.state.detectionService === ServiceFetchType.ERROR)
     }
 }
