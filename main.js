@@ -3,7 +3,6 @@ const path = require('path')
 const isDev = require('electron-is-dev'); 
 const { spawn } = require('child_process');
 
-
 let mainWindow = null
 let spawnedChild = null
 
@@ -13,12 +12,11 @@ const createWindow = () => {
 
     const startURL = isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, './front-end/build/index.html')}`;
     mainWindow.loadURL(startURL)
-    mainWindow.webContents.openDevTools()
-    spawnPythonServer()
+    startMasterServer()
 }
 
-function spawnPythonServer() {
-    spawnedChild = spawn('python', ['cgs/server.py']);
+function startMasterServer() {
+    spawnedChild = spawn('python', ['backend/master.py']);
     spawnedChild.stdout.on('data', (data) => console.log(data.toString('utf8')));
     spawnedChild.on('error', (err) => console.error(err));
 }   

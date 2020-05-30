@@ -5,3 +5,4 @@ build/
 dist/
 pycalcdist/
 .vscode/
+*__pycache__
