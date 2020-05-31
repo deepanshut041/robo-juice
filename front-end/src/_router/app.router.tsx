@@ -7,11 +7,12 @@ import HomeScreen from "../_screens/home/home.screen";
 class AppRouter extends Component<RouteComponentProps> {
 
     render() {
+        console.log(this.props)
         return (
             <Switch>
+                <Route path="/auth" exact component={AuthScreen} />
+                <Route path="/home" exact component={HomeScreen} />
                 <Route path="/" exact component={SplashScreen} />
-                <Route path="/auth" component={AuthScreen} />
-                <Route path="/home" component={HomeScreen} />
             </Switch>
         )
     }

@@ -14,6 +14,7 @@ const createWindow = () => {
 
     const startURL = isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, './front-end/build/index.html')}`;
     mainWindow.loadURL(startURL)
+    // mainWindow.webContents.openDevTools()
     startMasterServer()
     startPlcServer()
     startDetectionServer()
