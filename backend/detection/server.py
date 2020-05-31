@@ -1,41 +1,56 @@
-from flask import Flask, jsonify, request
-from flask_cors import CORS
+import rpyc
 import threading
 import time
 
-detect = True
 
-app = Flask(__name__)
-CORS(app)
+class DetectionTask: 
+      
+    def __init__(self): 
+        self._detect = False
+        
+    def pause(self): 
+        self._detect = False
+    
+    def start(self):
+        self._detect = True
+    
+    def status(self):
+        return self._detect
+        
+    def run(self): 
+        while True: 
+            time.sleep(1)
+            if(self._detect):
+                print("Detecting")
+            else:
+                print("Not Detecting")
+        
 
-@app.route('/')
-def main():
-    return jsonify(name="Plc Service")
 
-@app.route('/detect')
-def detection():
-    global detect
-    s = request.args.get('status')
-    if s == 'on':
-        detect = True
-    if s == 'off':
-        detect = False
+class DetectionService(rpyc.Service):
 
-    return jsonify(msg="Detection service", status = detect)
+    def __init__(self):
+        self.c = DetectionTask() 
+        self.t = threading.Thread(target=self.c.run)
 
+    def on_connect(self, conn):
+        self.t.start()
+        print("Detection Service Connected")
 
-# For image detection logic goes here
-def yolo():
-    time.sleep(1)
+    def on_disconnect(self, conn):
+        self.t.join()
+        print("Detection Service Ended")
+
+    def exposed_detection_start(self):
+        self.c.start()
+    
+    def exposed_detection_status(self):
+        return self.c.status()
+
+    def exposed_detection_end(self):
+        self.c.pause()
 
 if __name__ == '__main__':
-    flask_t = threading.Thread(target=app.run, args=('127.0.0.1','5002'))
-    flask_t.start()
-
-    while(True):
-        if(detect):
-            yolo()
-        else:
-            time.sleep(1)
-
+    t = rpyc.ThreadedServer(DetectionService, port=18861)
+    t.start()
     

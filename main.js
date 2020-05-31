@@ -17,7 +17,7 @@ const createWindow = () => {
     // mainWindow.webContents.openDevTools()
     startMasterServer()
     startPlcServer()
-    startDetectionServer()
+    // startDetectionServer()
 }
 
 function startMasterServer() {
