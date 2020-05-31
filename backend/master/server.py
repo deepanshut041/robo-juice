@@ -12,11 +12,20 @@ shop_status = ShopState.WELCOME
 detection_service = rpyc.connect("localhost", 18861).root
 plc_service = rpyc.connect("localhost", 18862).root
 
-@app.route('/')
-def main():
-    return jsonify(status="Master Service")
+# Temporary
+@app.route('/plc/verify')
+def plc_verify():
+    return jsonify(msg=plc_service.verify())
 
-@app.route('/detect')
+@app.route('/detection/verify')
+def detection_verify():
+    return jsonify(msg=detection_service.verify())
+
+@app.route('/master/verify')
+def master_verify():
+    return jsonify(status="Master Service is Working")
+
+@app.route('/detection/detect')
 def detection():
     s = request.args.get('status')
     if s == 'on':
@@ -24,16 +33,6 @@ def detection():
     if s == 'off':
         detection_service.detection_end()
     return jsonify(msg="Detection service", status = detection_service.detection_status())
-
-# Temporary
-@app.route('/verify')
-def verify():
-    return jsonify(msg=plc_service.verify())
-
-@app.route('/orders')
-def orders():
-    emit('orders', "orders", broadcast=True, namespace='/')
-    return jsonify(status="Master Service")
 
 @socketio.on('connect')
 def connect():

@@ -60,6 +60,9 @@ class DetectionService(rpyc.Service):
     def exposed_detection_end(self):
         if(self.c.status()):
             self.c.pause()
+    
+    def exposed_verify(self):
+        return "Detection Service is Working!"
 
 if __name__ == '__main__':
     t = rpyc.OneShotServer(DetectionService, port=18861)

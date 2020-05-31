@@ -6,7 +6,7 @@ class PlcService(rpyc.Service):
         pass
     
     def exposed_verify(self):
-        return "Hello from plc service"
+        return "PLC Service is Working!"
 
 if __name__ == '__main__':
     t = rpyc.OneShotServer(PlcService, port=18862)

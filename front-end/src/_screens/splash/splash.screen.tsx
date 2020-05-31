@@ -38,9 +38,9 @@ export default class SplashScreen extends Component<any, SplashScreenState>{
                         <Col className="col-auto">
                             <img width="200px" src={logo} alt="Logo" className="mx-auto d-block" />
                             <div className="mt-5 mb-2">
-                                {this.displayListItem(this.state.masterService, "Master Service at port 5000")}
-                                {this.displayListItem(this.state.plcService, "Plc Service at port 5001")}
-                                {this.displayListItem(this.state.detectionService, "Image Detection Service at port 5002")}
+                                {this.displayListItem(this.state.masterService, "Master Service is Working!")}
+                                {this.displayListItem(this.state.plcService, "PLC Service is Working!")}
+                                {this.displayListItem(this.state.detectionService, "Image Detection Service is Working!")}
                             </div>
                             {(this.fetchError()) ? (
                                 <div className="text-center">
@@ -82,19 +82,19 @@ export default class SplashScreen extends Component<any, SplashScreenState>{
             plcService: ServiceFetchType.LOADING,
             detectionService: ServiceFetchType.LOADING
         })
-        fetch('http://localhost:5000').then(async res => {
+        fetch('http://localhost:5000/master/verify').then(async res => {
             this.setState({ masterService: ServiceFetchType.DONE })
         }).catch(error => {
             this.setState({ masterService: ServiceFetchType.ERROR })
         })
 
-        fetch('http://localhost:5001').then(async res => {
+        fetch('http://localhost:5000/plc/verify').then(async res => {
             this.setState({ plcService: ServiceFetchType.DONE })
         }).catch(error => {
             this.setState({ plcService: ServiceFetchType.ERROR })
         })
 
-        fetch('http://localhost:5002').then(async res => {
+        fetch('http://localhost:5000/detection/verify').then(async res => {
             this.setState({ detectionService: ServiceFetchType.DONE })
         }).catch(error => {
             this.setState({ detectionService: ServiceFetchType.ERROR })
