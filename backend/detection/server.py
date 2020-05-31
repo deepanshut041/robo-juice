@@ -1,28 +1,36 @@
 import rpyc
 import threading
 import time
+import cv2
+import numpy
 
 
 class DetectionTask: 
       
-    def __init__(self): 
+    def __init__(self):
         self._detect = False
-        
-    def pause(self): 
+
+    def pause(self):
+        self.cap.release()
         self._detect = False
     
     def start(self):
+        self.cap = cv2.VideoCapture(0, cv2.CAP_DSHOW) 
         self._detect = True
     
     def status(self):
         return self._detect
+    
+    def terminate(self):
+        self.cap.release()
         
     def run(self): 
         while True: 
-            time.sleep(1)
             if(self._detect):
-                print("Detecting")
+                ret, frame = self.cap.read()
+                print(frame.shape)
             else:
+                time.sleep(1)
                 print("Not Detecting")
         
 
@@ -38,17 +46,20 @@ class DetectionService(rpyc.Service):
         print("Detection Service Connected")
 
     def on_disconnect(self, conn):
+        self.c.terminate()
         self.t.join()
         print("Detection Service Ended")
 
     def exposed_detection_start(self):
-        self.c.start()
+        if(not self.c.status()):
+            self.c.start()
     
     def exposed_detection_status(self):
         return self.c.status()
 
     def exposed_detection_end(self):
-        self.c.pause()
+        if(self.c.status()):
+            self.c.pause()
 
 if __name__ == '__main__':
     t = rpyc.ThreadedServer(DetectionService, port=18861)
