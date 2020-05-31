@@ -10,6 +10,7 @@ CORS(app)
 
 shop_status = ShopState.WELCOME
 detection_service = rpyc.connect("localhost", 18861).root
+plc_service = rpyc.connect("localhost", 18862).root
 
 @app.route('/')
 def main():
@@ -24,6 +25,11 @@ def detection():
         detection_service.detection_end()
     return jsonify(msg="Detection service", status = detection_service.detection_status())
 
+# Temporary
+@app.route('/verify')
+def verify():
+    return jsonify(msg=plc_service.verify())
+
 @app.route('/orders')
 def orders():
     emit('orders', "orders", broadcast=True, namespace='/')
@@ -32,7 +38,6 @@ def orders():
 @socketio.on('connect')
 def connect():
     emit('status', shop_status.name)
-
 
 if __name__ == '__main__':
     socketio.run(app)

@@ -22,11 +22,13 @@ class DetectionTask:
         return self._detect
     
     def terminate(self):
-        self.cap.release()
+        if cap:
+            self.cap.release()
         
     def run(self): 
         while True: 
             if(self._detect):
+                time.sleep(0.5)
                 ret, frame = self.cap.read()
                 print(frame.shape)
             else:
@@ -43,12 +45,10 @@ class DetectionService(rpyc.Service):
 
     def on_connect(self, conn):
         self.t.start()
-        print("Detection Service Connected")
 
     def on_disconnect(self, conn):
         self.c.terminate()
         self.t.join()
-        print("Detection Service Ended")
 
     def exposed_detection_start(self):
         if(not self.c.status()):
@@ -62,6 +62,6 @@ class DetectionService(rpyc.Service):
             self.c.pause()
 
 if __name__ == '__main__':
-    t = rpyc.ThreadedServer(DetectionService, port=18861)
+    t = rpyc.OneShotServer(DetectionService, port=18861)
     t.start()
     

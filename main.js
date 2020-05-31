@@ -5,8 +5,9 @@ const { spawn } = require('child_process');
 
 let mainWindow = null
 let masterServer = null // port 5000
-let plcServer = null // port 5001
-let detectionServer = null // port 5002
+let detectionServer = null // port 18861
+let plcServer = null // port 18862
+
 
 const createWindow = () => {
     mainWindow = new BrowserWindow({ width: 800, height: 600, fullscreen: !isDev})
@@ -15,9 +16,9 @@ const createWindow = () => {
     const startURL = isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, './front-end/build/index.html')}`;
     mainWindow.loadURL(startURL)
     // mainWindow.webContents.openDevTools()
-    startMasterServer()
+    startDetectionServer()
     startPlcServer()
-    // startDetectionServer()
+    startMasterServer()
 }
 
 function startMasterServer() {
@@ -27,13 +28,13 @@ function startMasterServer() {
 }   
 
 function startPlcServer(){
-    plcServer = spawn('python', ['backend/plc/server.py']);
+    plcServer = spawn('python', ['backend/plc/plc_service.py']);
     plcServer.stdout.on('data', (data) => console.log(data.toString('utf8')));
     plcServer.on('error', (err) => console.error(err));
 }
 
 function startDetectionServer(){
-    detectionServer = spawn('python', ['backend/detection/server.py']);
+    detectionServer = spawn('python', ['backend/detection/detection_service.py']);
     detectionServer.stdout.on('data', (data) => console.log(data.toString('utf8')));
     detectionServer.on('error', (err) => console.error(err));
 }
