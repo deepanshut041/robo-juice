@@ -1,0 +1,17 @@
+name: rj
+channels:
+  - defaults
+dependencies:
+  - pip=20.0.2=py37_3
+  - python=3.7.7=h81c818b_4
+  - pip:
+    - flask==1.1.2
+    - flask-cors==3.0.8
+    - flask-socketio==4.3.0
+    - numpy==1.18.4
+    - opencv-python==4.2.0.34
+    - pillow==7.1.2
+    - rpyc==4.1.5
+    - torch==1.5.0
+    - torchvision==0.6.0
+prefix: C:\ProgramData\Anaconda3\envs\rj

@@ -102,13 +102,13 @@ export default class SplashScreen extends Component<any, SplashScreenState>{
     }
 
     allFetchSuccess(): boolean {
-        return (this.state.plcService === ServiceFetchType.DONE 
-            && this.state.masterService === ServiceFetchType.DONE 
+        return (this.state.plcService === ServiceFetchType.DONE
+            && this.state.masterService === ServiceFetchType.DONE
             && this.state.detectionService === ServiceFetchType.DONE)
     }
 
     fetchError(): boolean {
-        return (this.state.plcService === ServiceFetchType.ERROR 
+        return (this.state.plcService === ServiceFetchType.ERROR
             || this.state.masterService === ServiceFetchType.ERROR
             || this.state.detectionService === ServiceFetchType.ERROR)
     }
