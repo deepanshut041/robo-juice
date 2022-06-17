@@ -14,7 +14,7 @@
   },
   "homepage": "https://github.com/deepanshut041/robo-juice#readme",
   "devDependencies": {
-    "electron": "^9.0.0",
+    "electron": "^15.5.5",
     "electron-packager": "^14.2.1"
   },
   "dependencies": {
